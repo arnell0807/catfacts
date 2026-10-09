@@ -1,4 +1,5 @@
 import { EmptyState } from '../components/EmptyState'
+import { secondaryButton } from '../components/FactCard'
 import { clearHistory } from '../store/catSlice'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 
@@ -9,16 +10,16 @@ export function HistoryPage() {
 
   return (
     <section>
-      <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-orange-700">Last 50 facts</p>
-          <h1 className="mt-1 text-4xl font-black tracking-tight text-stone-950">History</h1>
+          <h1 className="font-serif text-3xl font-semibold tracking-tight">History</h1>
+          <p className="mt-1 text-muted">Your last 50 facts, newest first.</p>
         </div>
         {history.length > 0 && (
           <button
             type="button"
             onClick={() => dispatch(clearHistory())}
-            className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-bold text-stone-600 hover:bg-stone-50"
+            className={secondaryButton}
           >
             Clear history
           </button>
@@ -26,18 +27,24 @@ export function HistoryPage() {
       </div>
 
       {history.length === 0 ? (
-        <EmptyState emoji="🐈" title="Nothing here yet" body="Every fact you view will be added here automatically." />
+        <EmptyState title="Nothing here yet" body="Every fact you view will be added here automatically." />
       ) : (
-        <div className="space-y-3">
+        <ol className="divide-y divide-rule overflow-hidden rounded-lg border border-rule bg-surface shadow-card">
           {history.map((item) => (
-            <article key={item.viewedAt} className="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
-              <p className="font-semibold leading-relaxed text-stone-800">{item.fact}</p>
-              <time className="mt-3 block text-xs font-medium text-stone-400" dateTime={item.viewedAt}>
-                {new Date(item.viewedAt).toLocaleString()}
+            <li key={item.viewedAt} className="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:gap-6">
+              <time
+                className="shrink-0 pt-0.5 text-xs tabular-nums text-muted sm:w-36"
+                dateTime={item.viewedAt}
+              >
+                {new Date(item.viewedAt).toLocaleString(undefined, {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}
               </time>
-            </article>
+              <p className="leading-relaxed text-ink">{item.fact}</p>
+            </li>
           ))}
-        </div>
+        </ol>
       )}
     </section>
   )
