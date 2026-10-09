@@ -1,13 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { toggleFavorite } from "../store/catSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 type FactCardProps = {
   fact: string;
   compact?: boolean;
+  label?: string;
+  children?: ReactNode;
 };
 
-export function FactCard({ fact, compact = false }: FactCardProps) {
+export const buttonBase =
+  "inline-flex items-center justify-center rounded-md px-3.5 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+
+export const secondaryButton =
+  `${buttonBase} border border-rule bg-surface text-ink hover:bg-paper`;
+
+export function FactCard({ fact, compact = false, label, children }: FactCardProps) {
   const dispatch = useAppDispatch();
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
   const copiedTimer = useRef<number>(undefined);
@@ -35,49 +43,48 @@ export function FactCard({ fact, compact = false }: FactCardProps) {
   }
 
   return (
-    <article
-      className={`rounded-3xl border border-orange-100 bg-white shadow-sm ${
-        compact ? "p-5" : "p-7 sm:p-9"
-      }`}
-    >
-      <div className="mb-5 flex items-center justify-between gap-4">
-        <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-800">
-          Cat fact
-        </span>
+    <article className="flex flex-col rounded-lg border border-rule bg-surface shadow-card">
+      <div className={compact ? "flex-1 p-5" : "p-7 sm:p-10"}>
+        {label && (
+          <p className="mb-4 text-sm font-medium text-accent">{label}</p>
+        )}
 
-        <span aria-hidden="true" className="text-2xl">
-          🐾
-        </span>
+        <p
+          className={`font-serif text-ink ${
+            compact ? "text-lg leading-relaxed" : "text-2xl leading-snug sm:text-3xl"
+          }`}
+        >
+          {fact}
+        </p>
       </div>
 
-      <p
-        className={`${
-          compact ? "text-lg" : "text-2xl sm:text-3xl"
-        } font-bold leading-snug tracking-tight text-stone-900`}
+      <div
+        className={`flex flex-wrap items-center gap-2 border-t border-rule ${
+          compact ? "px-5 py-3" : "px-7 py-4 sm:px-10"
+        }`}
       >
-        {fact}
-      </p>
-
-      <div className="mt-6 flex flex-wrap gap-3">
         <button
           type="button"
           onClick={() => dispatch(toggleFavorite(fact))}
-          className="rounded-full bg-stone-900 px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-0.5"
+          aria-pressed={isFavorite}
+          className={
+            isFavorite
+              ? `${buttonBase} border border-accent/30 bg-accent-soft text-accent`
+              : secondaryButton
+          }
         >
-          {isFavorite ? "♥ Saved" : "♡ Save"}
+          {isFavorite ? "Saved" : "Save"}
         </button>
 
-        <button
-          type="button"
-          onClick={copyFact}
-          className="rounded-full border border-stone-200 px-4 py-2 text-sm font-bold text-stone-700 transition hover:bg-stone-50"
-        >
+        <button type="button" onClick={copyFact} className={secondaryButton}>
           {copyStatus === "copied"
-            ? "Copied!"
+            ? "Copied"
             : copyStatus === "failed"
               ? "Couldn't copy"
               : "Copy"}
         </button>
+
+        {children && <div className="ml-auto">{children}</div>}
       </div>
     </article>
   );
