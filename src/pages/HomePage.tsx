@@ -14,7 +14,6 @@ export function HomePage() {
   const favorites = useAppSelector(
     (state) => state.cats.favorites.length
   );
-
   const totalViewed = useAppSelector(
     (state) => state.cats.totalViewed
   );
