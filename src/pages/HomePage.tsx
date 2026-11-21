@@ -28,13 +28,12 @@ export function HomePage() {
     <section>
       <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
-            One cat fact at a time
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Cat facts
           </h1>
 
           <p className="mt-2 max-w-lg text-muted">
-            Pull a random fact, save the ones worth keeping, and look back
-            through everything you've read.
+            Get a random cat fact and save the ones you like.
           </p>
         </div>
 
@@ -80,7 +79,7 @@ export function HomePage() {
             disabled={isFetching}
             className={primaryButton}
           >
-            {isFetching ? "Loading…" : "Next fact →"}
+            {isFetching ? "Loading…" : "Next fact"}
           </button>
         </FactCard>
       )}
@@ -97,7 +96,7 @@ function Stat({ label, value }: StatProps) {
   return (
     <div className="min-w-24 px-5 py-3">
       <dt className="text-xs font-medium text-muted">{label}</dt>
-      <dd className="mt-0.5 font-serif text-2xl font-semibold tabular-nums text-ink">
+      <dd className="mt-0.5 text-2xl font-semibold tabular-nums text-ink">
         {value}
       </dd>
     </div>

@@ -50,7 +50,7 @@ export function FactCard({ fact, compact = false, label, children }: FactCardPro
         )}
 
         <p
-          className={`font-serif text-ink ${
+          className={`text-ink ${
             compact ? "text-lg leading-relaxed" : "text-2xl leading-snug sm:text-3xl"
           }`}
         >

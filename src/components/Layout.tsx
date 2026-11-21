@@ -22,10 +22,7 @@ export function Layout() {
       <header className="border-b border-rule bg-surface">
         <div className="mx-auto flex max-w-4xl flex-col gap-3 px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
           <NavLink to="/" className="flex items-center gap-2.5">
-            <span className="grid size-8 place-items-center rounded-md bg-ink font-serif text-lg font-semibold text-paper">
-              C
-            </span>
-            <span className="font-serif text-lg font-semibold">CatFact</span>
+            <span className="text-lg font-semibold">CatFact</span>
           </NavLink>
 
           <nav className="flex gap-1">
